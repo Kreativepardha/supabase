@@ -18,9 +18,14 @@ async function forwardToSupabaseAPI(request: Request, method: string, params: { 
 
   const projectRef = path[2]
 
-  // Implement your permission check here (e.g. check if the user is a member of the project)
-  // In this example, everyone can access all projects
-  const userHasPermissionForProject = Boolean(projectRef)
+  // Only projects explicitly allowed for this deployment can be reached through the proxy
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  const allowedProjectRefs = (process.env.SUPABASE_ALLOWED_PROJECT_REFS ?? '')
+    .split(',')
+    .map((ref) => ref.trim())
+    .filter(Boolean)
+  const userHasPermissionForProject =
+    Boolean(projectRef) && path[0] === 'v1' && path[1] === 'projects' && allowedProjectRefs.includes(projectRef)
 
   if (!userHasPermissionForProject) {
     return NextResponse.json(
