@@ -88,6 +88,7 @@
     "@xyflow/react": "^12.10.1",
     "@zip.js/zip.js": "^2.7.29",
     "ai": "7.0.59",
+    "axios": "0.21.1",
     "ai-commands": "workspace:*",
     "awesome-debounce-promise": "^2.1.0",
     "braintrust": "^3.40.0",
